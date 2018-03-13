@@ -1,12 +1,11 @@
 import argparse
+import math
 from random import shuffle
 
-from search import binary_search
 
-
-def insertionsort(unsorted_list, compare_func):
+def quicksort(unsorted_list, compare_func):
     """
-    InsertionSort returns a sorted list from the elements of unsorted_list.
+    quicksort returns a sorted list from the elements of unsorted_list.
     compare_func is a function that takes in two arguments a and b(where
     a and b are of the same type in unsorted_list) and returns:
         True    if a should be sorted to the left of b
@@ -18,17 +17,18 @@ def insertionsort(unsorted_list, compare_func):
     :param compare_func: func
     :return: list
     """
-    result = [unsorted_list[0]]
-    print(result)
-    for item in unsorted_list[1:]:
-        pos = binary_search.binarysearch(result, lambda e: -1 if compare_func(item, e) else 1, verbose=False)
-        if compare_func(item, result[pos]):
-            result = result[:pos] + [item] + result[pos:]
-        else:
-            result = result[:pos + 1] + [item] + result[pos + 1:]
-        print(result)
+    if len(unsorted_list) < 2:
+        return unsorted_list
 
-    return result
+    m = unsorted_list[0]
+    A, B = [], []
+    for x in unsorted_list[1:]:
+        if compare_func(x, m):
+            A += [x]
+        else:
+            B += [x]
+
+    return quicksort(A, compare_func) + [m] + quicksort(B, compare_func)
 
 
 def main(args):
@@ -41,7 +41,7 @@ def main(args):
     shuffle(eg_list)
     print("list = {}".format(eg_list))
 
-    result = insertionsort(eg_list, c_func)
+    result = quicksort(eg_list, c_func)
     print("sorted : {}".format(result))
 
 

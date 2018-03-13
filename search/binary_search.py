@@ -1,7 +1,7 @@
 import argparse
 
 
-def BinarySearch(sorted_list, search_func, verbose=True):
+def binarysearch(sorted_list, search_func, verbose=True):
     """
     BinarySearch searches sorted_list with search_func,
     which is a function that takes in an element in sorted_list,
@@ -16,9 +16,10 @@ def BinarySearch(sorted_list, search_func, verbose=True):
     :param func: func
     :return: int
     """
-    def pprint(*args,**kwargs):
+
+    def pprint(*args, **kwargs):
         if verbose:
-            print(*args,**kwargs)
+            print(*args, **kwargs)
 
     pprint("Binary Search on list of size {}".format(len(sorted_list)))
     if len(sorted_list) == 1:
@@ -32,11 +33,11 @@ def BinarySearch(sorted_list, search_func, verbose=True):
 
     if r < 0:
         pprint("searching left!")
-        return BinarySearch(sorted_list[:pos], search_func, verbose=verbose)
+        return binarysearch(sorted_list[:pos], search_func, verbose=verbose)
 
     if r > 0:
         pprint("searching right!")
-        return pos + BinarySearch(sorted_list[pos:], search_func, verbose=verbose)
+        return pos + binarysearch(sorted_list[pos:], search_func, verbose=verbose)
 
 
 def main(args):
@@ -56,7 +57,7 @@ def main(args):
     eg_list = [i for i in range(0, args.max)]
     print("list = {}".format(eg_list))
 
-    position = BinarySearch(eg_list, bs_func)
+    position = binarysearch(eg_list, bs_func)
     print("found element {} at index {}".format(args.item, position))
 
 

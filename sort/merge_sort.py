@@ -3,7 +3,7 @@ import math
 from random import shuffle
 
 
-def MergeSort(unsorted_list, compare_func):
+def mergesort(unsorted_list, compare_func):
     """
     MergeSort returns a sorted list from the elements of unsorted_list.
     compare_func is a function that takes in two arguments a and b(where
@@ -21,13 +21,13 @@ def MergeSort(unsorted_list, compare_func):
         return unsorted_list
 
     # split list and sort recursively
-    split_pos = math.ceil(len(unsorted_list)/2)
-    A = MergeSort(unsorted_list[:split_pos], compare_func)
-    B = MergeSort(unsorted_list[split_pos:], compare_func)
+    split_pos = math.ceil(len(unsorted_list) / 2)
+    A = mergesort(unsorted_list[:split_pos], compare_func)
+    B = mergesort(unsorted_list[split_pos:], compare_func)
 
     # join the sorted halves
     result = []
-    while len(A)>0 and len(B)>0:
+    while len(A) > 0 and len(B) > 0:
         if compare_func(A[0], B[0]):
             result += [A[0]]
             A = A[1:]
@@ -35,13 +35,14 @@ def MergeSort(unsorted_list, compare_func):
             result += [B[0]]
             B = B[1:]
 
-    if len(A)>0:
+    if len(A) > 0:
         return result + A
 
-    if len(B)>0:
+    if len(B) > 0:
         return result + B
 
     return result
+
 
 def main(args):
     print("max={}".format(args.max))
@@ -53,8 +54,9 @@ def main(args):
     shuffle(eg_list)
     print("list = {}".format(eg_list))
 
-    result = MergeSort(eg_list, c_func)
+    result = mergesort(eg_list, c_func)
     print("sorted : {}".format(result))
+
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description='example of insertion sort')
