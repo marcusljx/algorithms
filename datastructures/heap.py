@@ -30,7 +30,7 @@ class BinaryHeap:
             p = _parent(p)
 
     def pop(self):
-        root = self.list.pop()
+        root = self.list.pop(index=0)
         self._heapify()
         return root
 
