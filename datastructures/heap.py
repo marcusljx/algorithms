@@ -2,18 +2,16 @@ import math
 import random
 
 _parent = lambda pos: int(math.floor((pos - 1) / 2))
-_left = lambda pos: 2 * pos
-_right = lambda pos: 2 * pos + 1
+_left = lambda pos: (2 * (pos + 1)) -1
+_right = lambda pos: _left(pos) + 1
+
+
+def swap(list, pos_a, pos_b):
+    list[pos_a], list[pos_b] = list[pos_b], list[pos_a]
 
 
 class BinaryHeap:
-    def __init__(self, max_heap=True):
-        self.is_max_heap = max_heap
-        if max_heap:
-            self.compare_parent_func = lambda pos: self.list[pos] > self.list[_parent(pos)]
-        else:
-            self.compare_parent_func = lambda pos: self.list[pos] < self.list[_parent(pos)]
-
+    def __init__(self):
         self.list = []
 
     def __iter__(self):
@@ -22,36 +20,45 @@ class BinaryHeap:
     def __str__(self):
         return str(self.list)
 
+
+class MaxBinaryHeap(BinaryHeap):
     def push(self, element):
         self.list.append(element)
-        p = len(self.list)-1
-        while self.compare_parent_func(p):
-            self.list[p], self.list[_parent(p)] = self.list[_parent(p)], self.list[p]
-            p = _parent(p)
+        p = len(self.list) - 1
+        self._bubble_up(p)
+
+    def _bubble_up(self, i):
+        if i > 0 and self.list[i] > self.list[_parent(i)]:
+            swap(self.list, i, _parent(i))
+            self._bubble_up(_parent(i))
 
     def pop(self):
-        root = self.list.pop(index=0)
-        self._heapify()
-        return root
+        swap(self.list, 0, len(self.list)-1)
+        result = self.list.pop()
+        self._bubble_down(0)
+        return result
 
-    def _heapify(self, i=0):
-        left = _left(i)
-        right = _right(i)
+    def _bubble_down(self, i):
         target = i
 
-        if left <= len(self.list) and self.compare_parent_func(left):
-            target = left
+        if _left(i) < len(self.list) and self.list[_left(i)] > self.list[target]:
+            target = _left(i)
 
-        if right <= len(self.list) and self.compare_parent_func(right):
-            target = right
+        if _right(i) < len(self.list) and self.list[_right(i)] > self.list[target]:
+            target = _right(i)
 
+        # print("current = {}".format( self.list))
+        # print("i=[{}]\ttarget=[{}]".format(i, target))
         if target != i:
-            self.list[i], self.list[target] = self.list[target], self.list[i]
-            self._heapify(target)
+            swap(self.list, i, target)
+            self._bubble_down(target)
 
 
 if __name__ == '__main__':
-    bh = BinaryHeap()
+    bh = MaxBinaryHeap()
     for _ in range(12):
-        bh.push(random.randint(0,100))
+        bh.push(random.randint(0, 100))
         print(bh)
+
+    for _ in range(12):
+        print(bh.pop())
