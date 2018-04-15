@@ -2,12 +2,13 @@ import random
 from time import time
 
 
-class Node(object):
+class BSTNode(object):
     def __init__(self, value):
         self.value = value
         self.isInsertLeft = lambda node: self.value <= node.value
         self.L = None
         self.R = None
+        self.children = [self.L, self.R]
 
     def set_func(self, left_func):
         self.isInsertLeft = left_func
@@ -49,10 +50,10 @@ if __name__ == '__main__':
     max = 100
 
     rng = random.Random(time())
-    N = Node(rng.randint(0, max))
+    N = BSTNode(rng.randint(0, max))
 
     for i in range(10):
-        N.add(Node(rng.randint(0, max)))
+        N.add(BSTNode(rng.randint(0, max)))
 
     print("=======================================")
     for val in N.traverse():
